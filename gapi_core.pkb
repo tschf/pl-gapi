@@ -199,4 +199,40 @@ as
 
     return l_return;
   END authorized_request;  
+  
+  
+    function get_wallet_path return varchar2
+    AS
+    BEGIN
+    
+        return g_wallet_path;
+    
+    END get_wallet_path;
+    
+    procedure set_wallet_path(
+        p_path in varchar2)
+    AS
+    BEGIN
+    
+        g_wallet_path := p_path;
+        
+    END set_Wallet_path;
+    
+    function get_wallet_password return varchar2
+    AS
+    BEGIN
+    
+        return g_wallet_password;
+    
+    END get_wallet_password;
+    
+    procedure set_wallet_password(
+        p_password in varchar2)
+    AS
+    BEGIN
+    
+        g_wallet_password := p_password;
+        
+    END set_Wallet_password;    
+  
 end gapi_core;

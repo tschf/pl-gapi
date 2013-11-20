@@ -27,7 +27,7 @@ as
       , p_url in varchar2
       , p_method in varchar2 default 'GET'
       , p_content_type in varchar2 default 'application/json'
-      , p_payload in varchar2 in default NULL
+      , p_payload in varchar2 default NULL
       , p_wallet_path in varchar2 default NULL
       , p_wallet_password in varchar2 default '') return CLOB;
 
@@ -39,5 +39,13 @@ as
       , p_payload in BLOB
       , p_wallet_path in varchar2 default NULL
       , p_wallet_password in varchar2 default '') return CLOB;
+      
+    function get_wallet_path return varchar2;
+    procedure set_wallet_path(
+        p_path in varchar2);
+        
+    function get_wallet_password return varchar2;
+    procedure set_wallet_password(
+        p_password in varchar2);
 
 end gapi_core;
