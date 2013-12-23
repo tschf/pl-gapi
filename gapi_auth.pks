@@ -23,8 +23,7 @@ package gapi_auth
 as
 
     function get_authorization_url(
-	p_schema in varchar2
-      , p_state in varchar2
+        p_state in varchar2
       , p_scope in varchar2) return varchar2;
       
     procedure callback(

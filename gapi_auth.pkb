@@ -50,8 +50,7 @@ as
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
      function get_authorization_url(
-	p_schema in varchar2
-      , p_state in varchar2
+        p_state in varchar2
       , p_scope in varchar2) return varchar2
     AS
     
@@ -69,7 +68,7 @@ as
         l_url_params := replace(l_url_params, '#RESPONSE_TYPE#', 'code');  
         l_url_params := replace(l_url_params, '#CLIENT_ID#', g_client_id);
         l_url_params := replace(l_url_params, '#REDIRECT_URI#', g_redirect_uri);
-	l_url_params := replace(l_url_params, '#SCHEMA#', p_schema);
+	l_url_params := replace(l_url_params, '#SCHEMA#', sys_context('userenv','current_schema'));
         l_url_params := replace(l_url_params, '#SCOPE#', p_scope);
         l_url_params := replace(l_url_params, '#STATE#', p_state);
   
