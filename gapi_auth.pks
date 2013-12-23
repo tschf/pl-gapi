@@ -22,10 +22,10 @@ create or replace
 package gapi_auth
 as
 
-    procedure get_authorization_url(
-        p_state in varchar2
-      , p_url in varchar2
-      , p_scope in varchar2);
+    function get_authorization_url(
+	p_schema in varchar2
+      , p_state in varchar2
+      , p_scope in varchar2) return varchar2;
       
     procedure callback(
         code in varchar2 default NULL
@@ -33,3 +33,4 @@ as
       , state in varchar2);
 
 end gapi_auth;
+/

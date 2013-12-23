@@ -25,7 +25,7 @@ as
     g_client_id varchar2(400) := '';
     g_client_secret varchar2(400) := '';
     
-    g_redirect_uri varchar2(400) := 'http://example.com/pls/apex/' || USER || '.GAPI_AUTH.CALLBACK';
+    g_redirect_uri varchar2(400) := 'http://example.com/pls/apex/#SCHEMA#.GAPI_AUTH.CALLBACK';
     g_auth_url varchar2(400) := 'https://accounts.google.com/o/oauth2/auth';
     
     g_token_url varchar2(400) := 'https://accounts.google.com/o/oauth2/token';
@@ -49,32 +49,31 @@ as
     END get_session_user;
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
-    procedure get_authorization_url(
-        p_state in varchar2
-      , p_url in varchar2
-      , p_scope in varchar2)
+     function get_authorization_url(
+	p_schema in varchar2
+      , p_state in varchar2
+      , p_scope in varchar2) return varchar2
     AS
     
         l_url_params varchar2(400);
         l_state varchar2(400);
-        l_url varchar2(400);
         l_scope varchar2(400);
     BEGIN
     
         l_state := utl_url.unescape(p_state);
-        l_url := utl_url.unescape(p_url);
         l_scope := utl_url.unescape(p_scope);                      
         
         l_url_params :=  
             'response_type=#RESPONSE_TYPE#&client_id=#CLIENT_ID#&redirect_uri=#REDIRECT_URI#&scope=#SCOPE#&state=#STATE#&access_type=offline&approval_prompt=force';
-      
+
         l_url_params := replace(l_url_params, '#RESPONSE_TYPE#', 'code');  
         l_url_params := replace(l_url_params, '#CLIENT_ID#', g_client_id);
         l_url_params := replace(l_url_params, '#REDIRECT_URI#', g_redirect_uri);
+	l_url_params := replace(l_url_params, '#SCHEMA#', p_schema);
         l_url_params := replace(l_url_params, '#SCOPE#', p_scope);
         l_url_params := replace(l_url_params, '#STATE#', p_state);
   
-        htp.p(g_auth_url || '?' || l_url_params);
+        return g_auth_url || '?' || l_url_params;
         
     END get_authorization_url;
       
@@ -192,3 +191,4 @@ as
     
 
 end gapi_auth;
+/
