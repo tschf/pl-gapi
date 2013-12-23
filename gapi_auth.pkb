@@ -38,14 +38,14 @@ as
     AS
         l_user apex_workspace_Activity_log.apex_user%type;
     BEGIN
-        select apex_user into l_app_user
+        select apex_user into l_user
         from (
           select apex_user, to_char(view_date, 'hh:mi.ss') view_date, rank() over (order by view_date desc) rank
           from apex_workspace_Activity_log
-          where apex_session_id = l_unescaped_state)
+          where apex_session_id = p_session)
         where rank = 1;
         
-        return l_app_user;
+        return l_user;
     END get_session_user;
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
