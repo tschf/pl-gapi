@@ -62,8 +62,8 @@ as
           , p_session_id => NULL
           , p_app_page => apex_application.g_flow_id || ':' || 1);
           
-        /*apex_custom_auth.set_session_id(
-            p_session_id => p_session_id);*/
+        apex_custom_auth.set_session_id(
+            p_session_id => p_session_id);
           
     end re_init_session;
     
