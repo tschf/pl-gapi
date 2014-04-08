@@ -1,6 +1,6 @@
 /*******************************************************************
 
-Copyright (C) Trent Schafer 2013  
+Copyright (C) Trent Schafer 2013-2014 
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,5 +47,7 @@ as
     function get_wallet_password return varchar2;
     procedure set_wallet_password(
         p_password in varchar2);
+        
+    function get_timestamp(p_time TIMESTAMP default systimestamp) return varchar2;
 
 end gapi_core;

@@ -1,6 +1,6 @@
 /*******************************************************************
 
-Copyright (C) Trent Schafer 2013  
+Copyright (C) Trent Schafer 2013-2014  
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -234,5 +234,48 @@ as
         g_wallet_password := p_password;
         
     END set_Wallet_password;    
+    
+    /*
+        Date returned according to the format defined in RFC3399: https://tools.ietf.org/html/rfc3339
+        
+        Summary:
+        
+        - Years in 4 digits (3)
+        - Complexities of Daylight savings means it's best to use coordinated UTC (4.1)
+        - Day of the week should be excluded (5.4)
+        - Format should follow the convention:
+          full-year: 4 digits; month: 2 sigits; day: 2 digits
+          hour: 2 digits (00-23); minut: 2 digits (00-59); second: 2 digits (00-58, 00-59, 00-60 based on leap second rules)
+          
+          time numoffset: ("+" / "-") time hour ":" time minute
+          time offset: "Z" / time-numoffset
+          
+          date-time: full-date "T" full-time
+          
+          E.g.
+          
+          1985-04-12T23:20:50.52Z == 12th April 1985, 11:20.50PM
+          1996-12-19T16:39:57-08:00 == 19th December 1996, 4:39.57PM with an offset of -8:00. 
+            (Equivelant to: 20th December 1996, 12:39.56AM in UTC)
+            
+        Using the function sys_extract_utc, we can get the UTC time in one go. An alternative would be:
+        to_char(sysdate, 'yyyy-mm-dd') || 'T' || to_char(sysdate, 'hh24:mi:ss')||tz_offset(sessiontimezone)
+          
+    */
+    function get_timestamp(p_time TIMESTAMP default systimestamp) return varchar2
+    AS
+        l_utc_timestamp TIMESTAMP;
+        l_date_cmp varchar2(10);
+        l_time_cmp varchar2(8);
+    BEGIN
+    
+        l_utc_timestamp := sys_extract_utc(p_time);
+        l_date_cmp := to_char(l_utc_timestamp, 'YYYY-MM-DD');
+        l_time_cmp := to_char(l_utc_timestamp, 'HH24:MI:SS');
+        
+        
+    
+        RETURN l_Date_cmp || 'T' || l_time_cmp || 'Z';    
+    END get_timestamp;
   
 end gapi_core;
