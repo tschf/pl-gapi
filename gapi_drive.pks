@@ -22,6 +22,8 @@ create or replace
 package gapi_drive
 as
 
+    g_scope_full constant varchar2(50) := 'https://www.googleapis.com/auth/drive.file';
+
     function create_folder(
         p_folder_name in varchar2
       , p_access_token in varchar2) return varchar2;
