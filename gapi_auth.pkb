@@ -32,21 +32,6 @@ as
     g_token_grant_type varchar2(20) := 'authorization_code';
     
     g_endpoint_url varchar2(400) := 'http://example.com/pls/apex/f?p=249:1:';
-    
-    function get_session_user(
-        p_session in varchar2) return varchar2
-    AS
-        l_user apex_workspace_Activity_log.apex_user%type;
-    BEGIN
-        select apex_user into l_user
-        from (
-          select apex_user, to_char(view_date, 'hh:mi.ss') view_date, rank() over (order by view_date desc) rank
-          from apex_workspace_Activity_log
-          where apex_session_id = p_session)
-        where rank = 1;
-        
-        return l_user;
-    END get_session_user;
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
      function get_authorization_url(
@@ -68,7 +53,7 @@ as
         l_url_params := replace(l_url_params, '#RESPONSE_TYPE#', 'code');  
         l_url_params := replace(l_url_params, '#CLIENT_ID#', g_client_id);
         l_url_params := replace(l_url_params, '#REDIRECT_URI#', g_redirect_uri);
-	l_url_params := replace(l_url_params, '#SCHEMA#', sys_context('userenv','current_schema'));
+        l_url_params := replace(l_url_params, '#SCHEMA#', sys_context('userenv','current_schema'));
         l_url_params := replace(l_url_params, '#SCOPE#', p_scope);
         l_url_params := replace(l_url_params, '#STATE#', p_state);
   
@@ -81,7 +66,6 @@ as
       , error in varchar2 default NULL
       , state in varchar2)
     AS
-        l_user apex_workspace_Activity_log.apex_user%type;
         
         l_token_req utl_http.req;
         l_token_res utl_http.resp;
@@ -95,8 +79,7 @@ as
         l_unescaped_state varchar2(200);
         l_endpoint_url varchar2(200);
     BEGIN
-    
-        l_user := get_session_user(state);
+        
         l_unescaped_state := utl_url.unescape(state);
         l_endpoint_url := g_endpoint_url || l_unescaped_state;
         
@@ -157,20 +140,7 @@ as
             END;
      
             l_response_json := JSON(l_response);
-            
-            /**
-            
-            INTRODUCE CUSTOM LOGIC HERE USING JSON DATA
-            
-            **/
-            
-            
-            
-            /**
-            
-            END CUSTOM LOGIC
-            
-            **/            
+                     
             
             
         END IF;
