@@ -58,7 +58,7 @@ as
         apex_application.g_flow_step_id := 1;
         
         apex_custom_auth.post_login(
-            p_uname => 'TRENT'
+            p_uname => get_session_username(p_session_id)
           , p_session_id => NULL
           , p_app_page => apex_application.g_flow_id || ':' || 1);
           
