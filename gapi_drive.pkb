@@ -1,6 +1,6 @@
 /*******************************************************************
 
-Copyright (C) Trent Schafer 2013  
+Copyright (C) Trent Schafer 2013-2014
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 create or replace
 package body gapi_drive
 as
+
+    /*
+    
+      insert action: https://developers.google.com/drive/v2/reference/files/insert
+      See also: https://developers.google.com/drive/web/folder
+    
+    */
 
     function create_folder(
         p_folder_name in varchar2
@@ -49,6 +56,14 @@ as
         return JSON_EXT.GET_STRING(l_response_JSON, 'id');    
     END create_folder;
         
+        
+    /*
+    
+      insert action: https://developers.google.com/drive/v2/reference/files/insert
+      
+    
+    */
+            
     procedure create_file(
         p_data in BLOB
       , p_mime_type in varchar2
