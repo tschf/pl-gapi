@@ -1,6 +1,6 @@
 /*******************************************************************
 
-Copyright (C) Trent Schafer 2013  
+Copyright (C) Trent Schafer 2013-2014
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,13 +25,13 @@ as
     g_client_id varchar2(400) := '';
     g_client_secret varchar2(400) := '';
     
-    g_redirect_uri varchar2(400) := 'http://example.com/pls/apex/#SCHEMA#.GAPI_AUTH.CALLBACK';
+    g_redirect_uri varchar2(400) := 'http://example.com/apex/#SCHEMA#.GAPI_AUTH.CALLBACK';
     g_auth_url varchar2(400) := 'https://accounts.google.com/o/oauth2/auth';
     
     g_token_url varchar2(400) := 'https://accounts.google.com/o/oauth2/token';
     g_token_grant_type varchar2(20) := 'authorization_code';
     
-    g_endpoint_url varchar2(400) := 'http://example.com/pls/apex/f?p=249:1:';
+    g_endpoint_url varchar2(400) := 'http://example.com:8888/apex/f?p=100:1:';
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
      function get_authorization_url(
@@ -79,6 +79,9 @@ as
         l_unescaped_state varchar2(200);
         l_endpoint_url varchar2(200);
     BEGIN
+    
+        l_token_req_payload := 
+            'code=#CODE#&client_id=#CLIENT_ID#&client_secret=#CLIENT_SECRET#&redirect_uri=#REDIRECT_URI#&grant_type=#GRANT_TYPE#';
         
         l_unescaped_state := utl_url.unescape(state);
         l_endpoint_url := g_endpoint_url || l_unescaped_state;
@@ -89,6 +92,7 @@ as
             l_token_req_payload := replace(l_token_req_payload, '#CLIENT_SECRET#', g_client_secret);
             l_token_req_payload := replace(l_token_req_payload, '#REDIRECT_URI#', g_redirect_uri);
             l_token_req_payload := replace(l_token_req_payload, '#GRANT_TYPE#', g_token_grant_type);
+            l_token_req_payload := replace(l_token_req_payload, '#SCHEMA#', sys_context('userenv','current_schema'));
 
             utl_http.set_wallet(
                 path => gapi_core.get_wallet_path
@@ -153,7 +157,9 @@ as
     WHEN
         OTHERS
             THEN
-                dbms_output.put_line(utl_http.get_detailed_sqlerrm);
+                htp.p(utl_http.get_detailed_sqlerrm);
+                htp.p(sqlerrm);
+                htp.p('<br />Click <a href="' || g_endpoint_url || state || '">here</a> to go back to apex');
     
     END callback;
     
