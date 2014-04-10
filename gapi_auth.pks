@@ -1,6 +1,6 @@
 /*******************************************************************
 
-Copyright (C) Trent Schafer 2013  
+Copyright (C) Trent Schafer 2013-2014  
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,6 +22,14 @@ create or replace
 package gapi_auth
 as
 
+    procedure begin_auth(
+      p_scope                     in varchar2
+    , p_return_app                in varchar2
+    , p_return_page               in VARCHAR2
+    , p_session                   in varchar2
+    , p_item_for_refresh_token    in varchar2
+    , p_item_for_access_token     in varchar2 default NULL);
+    
     function get_authorization_url(
         p_state in varchar2
       , p_scope in varchar2) return varchar2;

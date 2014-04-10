@@ -31,7 +31,48 @@ as
     g_token_url varchar2(400) := 'https://accounts.google.com/o/oauth2/token';
     g_token_grant_type varchar2(20) := 'authorization_code';
     
-    g_endpoint_url varchar2(400) := 'http://example.com:8888/apex/f?p=100:1:';
+    gc_cookie_name_return_app           constant varchar2(30) := 'GAPI_AUTH.RETURN-APP';
+    gc_cookie_name_return_page          constant varchar2(30) := 'GAPI_AUTH.RETURN-PAGE';
+    gc_cookie_name_refresh_token        constant varchar2(30) := 'GAPI_AUTH.REFRESH-TOKEN';
+    gc_cookie_name_access_token         constant varchar2(30) := 'GAPI_AUTH.ACCESS-TOKEN';
+    
+    procedure begin_auth(
+      p_scope                     in varchar2
+    , p_return_app                in varchar2
+    , p_return_page               in varchar2
+    , p_session                   in varchar2
+    , p_item_for_refresh_token    in varchar2
+    , p_item_for_access_token     in varchar2 default NULL)
+    AS
+      l_ttl DATE;
+    BEGIN
+      owa_util.mime_header('text/html', FALSE);
+
+      l_ttl := sysdate + 0.1;
+
+      owa_cookie.send(
+        name => gc_cookie_name_return_app
+      , value => p_return_app
+      , expires => l_ttl);
+      
+      owa_cookie.send(
+        name => gc_cookie_name_return_page
+      , value => p_return_page
+      , expires => l_ttl);
+      
+      owa_cookie.send(
+        name => gc_cookie_name_refresh_token
+      , value => p_item_for_refresh_token
+      , expires => l_ttl);      
+      
+      owa_cookie.send(
+        name => gc_cookie_name_access_token
+      , value => p_item_for_access_token
+      , expires => l_ttl);        
+    
+      owa_util.redirect_url(get_authorization_url(p_session, p_scope));
+    
+    END begin_auth;    
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
      function get_authorization_url(
@@ -76,6 +117,11 @@ as
         l_response_tmp varchar2(1024);
         l_response_json JSON;
         
+        l_app_cookie              owa_cookie.cookie;
+        l_page_cookie             owa_cookie.cookie;
+        l_access_token_cookie     owa_cookie.cookie;
+        l_refresh_token_cookie    owa_cookie.cookie;        
+        
         l_unescaped_state varchar2(200);
         l_endpoint_url varchar2(200);
     BEGIN
@@ -84,7 +130,6 @@ as
             'code=#CODE#&client_id=#CLIENT_ID#&client_secret=#CLIENT_SECRET#&redirect_uri=#REDIRECT_URI#&grant_type=#GRANT_TYPE#';
         
         l_unescaped_state := utl_url.unescape(state);
-        l_endpoint_url := g_endpoint_url || l_unescaped_state;
         
         if code is not null then
             l_token_req_payload := replace(l_token_req_payload, '#CODE#', code);
@@ -142,15 +187,27 @@ as
                         utl_http.end_response(
                             r => l_token_res);
             END;
-     
-            l_response_json := JSON(l_response);
-                     
-            
             
         END IF;
         
+        l_app_cookie := owa_cookie.get(gc_cookie_name_return_app);
+        l_page_cookie := owa_cookie.get(gc_cookie_name_return_page);
+        l_refresh_token_cookie := owa_cookie.get(gc_cookie_name_refresh_token);
+        l_access_token_cookie := owa_cookie.get(gc_cookie_name_access_token);
+        
         owa_util.redirect_url(
-            curl => l_endpoint_url);
+          curl => 
+            'f?p='
+            || l_app_cookie.vals(1)
+            || ':'
+            || l_page_cookie.vals(1)
+            || ':'
+            || state
+            || '::::'
+            || l_refresh_token_cookie.vals(1)
+            || ':'
+            || json_ext.get_string(l_response_json, 'refresh_token')
+        );        
         
         
     EXCEPTION
@@ -159,7 +216,6 @@ as
             THEN
                 htp.p(utl_http.get_detailed_sqlerrm);
                 htp.p(sqlerrm);
-                htp.p('<br />Click <a href="' || g_endpoint_url || state || '">here</a> to go back to apex');
     
     END callback;
     
