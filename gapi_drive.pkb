@@ -24,6 +24,45 @@ as
 
     /*
     
+        Copy action: https://developers.google.com/drive/v2/reference/files/copy
+    
+    */
+
+    function copy(
+        p_file_id in varchar2
+      , p_title in varchar2
+      , p_access_token in varchar2) return varchar2
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#/copy';
+        
+        l_payload JSON;
+        
+        l_response CLOB;
+        l_response_json JSON;
+        
+    BEGIN
+        l_update_url := replace(l_request_url, '#ID#', p_file_id);
+        
+        l_payload := JSON;
+        
+        l_payload.put('title', p_title);
+        
+        l_response := 
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_Request_url
+              , p_method => 'POST'
+              , p_payload => l_payload.to_char
+            );
+        
+        l_response_json := JSON(l_response);
+        
+        return JSON_EXT.GET_STRING(l_response_json, 'id');
+    
+    END copy;
+
+    /*
+    
       insert action: https://developers.google.com/drive/v2/reference/files/insert
       See also: https://developers.google.com/drive/web/folder
     
