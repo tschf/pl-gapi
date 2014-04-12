@@ -38,6 +38,9 @@ as
         code in varchar2 default NULL
       , error in varchar2 default NULL
       , state in varchar2);
+      
+    function get_access_token(
+      p_refresh_token in varchar2) return varchar2;
 
 end gapi_auth;
 /
