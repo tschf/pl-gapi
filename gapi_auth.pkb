@@ -195,6 +195,8 @@ as
         l_refresh_token_cookie := owa_cookie.get(gc_cookie_name_refresh_token);
         l_access_token_cookie := owa_cookie.get(gc_cookie_name_access_token);
         
+        l_set_Access_token := l_access_token_cookie.vals(1) is not null;
+        
         owa_util.redirect_url(
           curl => 
             'f?p='
@@ -205,8 +207,11 @@ as
             || state
             || '::::'
             || l_refresh_token_cookie.vals(1)
+            || case when l_set_Access_token then ',' || l_access_token_cookie.vals(1) end
             || ':'
             || json_ext.get_string(l_response_json, 'refresh_token')
+            || case when l_set_Access_token then ',' || json_ext.get_string(l_response_json, 'access_token') end
+            
         );        
         
         
