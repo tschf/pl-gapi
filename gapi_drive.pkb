@@ -28,7 +28,7 @@ as
     
     */
 
-    function copy(
+    function copy_file(
         p_file_id in varchar2
       , p_title in varchar2
       , p_access_token in varchar2) return varchar2
@@ -41,7 +41,7 @@ as
         l_response_json JSON;
         
     BEGIN
-        l_update_url := replace(l_request_url, '#ID#', p_file_id);
+        l_request_url := replace(l_request_url, '#ID#', p_file_id);
         
         l_payload := JSON;
         
@@ -59,7 +59,90 @@ as
         
         return JSON_EXT.GET_STRING(l_response_json, 'id');
     
-    END copy;
+    END copy_file;
+    
+    
+    /*
+    
+        delete action: https://developers.google.com/drive/v2/reference/files/delete
+    
+    */    
+    
+    procedure delete_file(
+        p_file_id in varchar2
+      , p_Access_token in varchar2)
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#';
+        
+        l_response CLOB;
+    BEGIN
+    
+        l_request_url := replace(l_request_url, '#ID#', p_file_id);
+        
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_method => 'DELETE'
+              , p_payload => NULL
+            );
+            
+        --response is NULL if successful            
+    
+    END delete_file;    
+    
+    /*
+    
+        trash action: https://developers.google.com/drive/v2/reference/files/trash
+        
+    */
+    
+    procedure trash_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2)
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#/trash';
+        
+        l_response CLOB;
+    BEGIN
+        l_request_url := replace(l_request_url, '#ID#', p_file_id);
+        
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_method => 'POST'
+              , p_payload => NULL
+            );
+            
+    END trash_file;
+    
+    /*
+    
+        untrash action: https://developers.google.com/drive/v2/reference/files/untrash
+        
+    */
+      
+    procedure untrash_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2)
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#/untrash';
+        
+        l_response CLOB;
+    BEGIN
+    
+        l_request_url := replace(l_Request_url, '#ID#', p_file_id);
+        
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_method => 'POST'
+              , p_payload => NULL
+            );        
+    
+    END untrash_file;
 
     /*
     

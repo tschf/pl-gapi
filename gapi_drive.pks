@@ -22,12 +22,24 @@ create or replace
 package gapi_drive
 as
 
-    g_scope_full constant varchar2(50) := 'https://www.googleapis.com/auth/drive.file';
+    g_scope_full constant varchar2(50) := 'https://www.googleapis.com/auth/drive';
     
-    function copy(
+    function copy_file(
         p_file_id in varchar2
       , p_title in varchar2
       , p_access_token in varchar2) return varchar2;
+      
+    procedure delete_file(
+        p_file_id in varchar2
+      , p_Access_token in varchar2);
+      
+    procedure trash_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2);
+      
+    procedure untrash_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2);
 
     function create_folder(
         p_folder_name in varchar2
