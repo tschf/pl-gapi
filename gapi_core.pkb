@@ -80,6 +80,14 @@ as
         r => l_req
       , data => p_payload);
     
+    else
+    
+      --payload is NULL, so set the content length to 0 (which is required for POSTs)
+      utl_http.set_header(
+        r => l_req
+      , name => 'Content-Length'
+      , value => 0);   
+    
     end if;
     
     l_res := utl_http.get_response(
