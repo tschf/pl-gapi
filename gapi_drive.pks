@@ -51,5 +51,12 @@ as
       , p_file_name in varchar2
       , p_folder_id in varchar2
       , p_access_token in varchar2);
+      
+    procedure update_file(
+        p_file_id in varchar2
+      , p_title in varchar2 default NULL
+      , p_description in varchar2 default NULL
+      , p_folder_id in varchar2 default NULL
+      , p_access_token in varchar2);
 
 end gapi_drive;

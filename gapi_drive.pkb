@@ -235,4 +235,65 @@ as
         
     END create_file;
 
+    /*
+    
+        update (patch) action: https://developers.google.com/drive/v2/reference/files/patch
+    
+    */
+    
+    procedure update_file(
+        p_file_id in varchar2
+      , p_title in varchar2 default NULL
+      , p_description in varchar2 default NULL
+      , p_folder_id in varchar2 default NULL
+      , p_access_token in varchar2)
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#';
+        
+        l_payload JSON;
+        l_folder JSON;
+        l_folder_list JSON_LIST;
+        
+        l_response CLOB;
+    BEGIN
+    
+        l_Request_url := replace(l_Request_url, '#ID#', p_file_id);
+    
+        l_payload := JSON;
+        
+        if p_title is not null
+        then
+            l_payload.put('title', p_title);
+        end if;
+        
+        if p_description is not null
+        then
+            l_payload.put('description', p_description);
+        end if;
+        
+        if p_folder_id is not null
+        then
+            l_folder := JSON;
+            l_folder.put('id', p_folder_id);
+            
+            l_folder_list := JSON_LIST;
+            l_folder_list.append(l_folder.to_json_value);
+            
+            l_payload.put('parents', l_folder_list);
+        end if;    
+        
+        insert into debug_msg values (l_payload.to_char);
+        
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_payload => l_payload.to_char
+              , p_method => 'PATCH'
+            );
+        
+           
+    END update_file;    
+
 end gapi_drive;
+/
