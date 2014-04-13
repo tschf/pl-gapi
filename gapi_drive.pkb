@@ -282,8 +282,6 @@ as
             l_payload.put('parents', l_folder_list);
         end if;    
         
-        insert into debug_msg values (l_payload.to_char);
-        
         l_response :=
             gapi_core.authorized_request(
                 p_access_token => p_access_token
@@ -294,6 +292,30 @@ as
         
            
     END update_file;    
+    
+    /*
+        touch action: https://developers.google.com/drive/v2/reference/files/touch
+    */
+    
+    procedure touch_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2)
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#/touch';
+        
+        l_response CLOB;
+    BEGIN
+    
+        l_request_url := replace(l_request_url, '#ID#', p_file_id);
+        
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_payload => NULL
+              , p_method => 'POST');
+    
+    END touch_file;
 
 end gapi_drive;
 /
