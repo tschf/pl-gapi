@@ -163,8 +163,57 @@ as
         
         
     
-        return NULL;
+        return file;
     END get_file;    
+    
+    /*
+    
+        list action: https://developers.google.com/drive/v2/reference/files/list
+        
+    */
+    
+    function list_files(
+        p_max_results in NUMBER
+      , p_query in varchar2
+      , p_access_token in varchar2) return t_file_list
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files';
+        
+        l_response CLOB;
+        l_response_json JSON;
+        l_json_file_list JSON_LIST;
+        l_cur_file t_file;
+        
+        l_file_list t_file_list;
+    BEGIN
+    
+        l_request_url := l_request_url || '?maxResults='||p_max_results||'&q='||p_query;
+        l_request_url := utl_url.escape(l_request_url);
+        
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_method => 'GET'
+              , p_payload => NULL);
+              
+              
+        l_response_json := JSON(l_response);
+        
+        l_json_file_list := JSON_EXT.get_json_list(l_Response_json, 'items');
+        
+        for i in 1..l_json_file_list.COUNT
+        LOOP
+            
+            l_cur_file := get_file_from_json(l_json_file_list.get(i).to_char);
+            l_file_list(i) := l_cur_file;
+            
+        END LOOP;
+              
+        
+        return l_file_list;
+    
+    END list_files;
     
     /*
     

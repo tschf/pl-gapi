@@ -1,6 +1,6 @@
 /*******************************************************************
 
-Copyright (C) Trent Schafer 2013  
+Copyright (C) Trent Schafer 2013-2014
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -54,6 +54,8 @@ as
       , app_data_contents BOOLEAN
     );
     
+    type t_file_list is table of t_file index by PLS_INTEGER;
+    
     function copy_file(
         p_file_id in varchar2
       , p_title in varchar2
@@ -66,6 +68,11 @@ as
     function get_file(
         p_file_id in varchar2
       , p_access_token in varchar2) return t_file;
+      
+    function list_files(
+        p_max_results in NUMBER
+      , p_query in varchar2
+      , p_access_token in varchar2) return t_file_list;
       
     procedure trash_file(
         p_file_id in varchar2
