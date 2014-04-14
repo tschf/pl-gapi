@@ -19,7 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 *******************************************************************/
 
 create or replace
-package gapi_drive
+package gapi_drive_file
 as
 
     g_scope_full constant varchar2(50) := 'https://www.googleapis.com/auth/drive';
@@ -105,5 +105,5 @@ as
       , p_access_token in varchar2);
         
 
-end gapi_drive;
+end gapi_drive_file;
 /

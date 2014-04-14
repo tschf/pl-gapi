@@ -19,7 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 *******************************************************************/
 
 create or replace
-package body gapi_drive
+package body gapi_drive_file
 as
 
     /*
@@ -441,5 +441,5 @@ as
     
     END touch_file;
 
-end gapi_drive;
+end gapi_drive_file;
 /
