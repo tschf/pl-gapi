@@ -24,6 +24,36 @@ as
 
     g_scope_full constant varchar2(50) := 'https://www.googleapis.com/auth/drive';
     
+    type t_file is record (
+        kind varchar2(20) := 'drive#file'
+      , id varchar2(50)
+      , self_link varchar2(200)
+      , alternate_link varchar2(200)
+      , embed_link varchar2(200)
+      , icon_link varchar2(200)
+      , thumbnail_link varchar2(200)
+      , title varchar2(200)
+      , description varchar2(4000)
+      , mime_type varchar2(200)
+      , starred BOOLEAN
+      , hidden BOOLEAN
+      , trashed BOOLEAN
+      , restricted BOOLEAN
+      , viewed BOOLEAN
+      , parent_id varchar2(50)
+      , created_date varchar2(100)
+      , modified_date varchar2(100)
+      , modified_by_me_date varchar2(100)
+      , last_viewed_by_me_date varchar2(100)
+      , quota_bytes_used NUMBER
+      , last_modifying_user_name varchar2(200)
+      , editable BOOLEAN
+      , copyable BOOLEAN
+      , writers_can_share BOOLEAN
+      , shared BOOLEAN
+      , app_data_contents BOOLEAN
+    );
+    
     function copy_file(
         p_file_id in varchar2
       , p_title in varchar2
@@ -32,6 +62,10 @@ as
     procedure delete_file(
         p_file_id in varchar2
       , p_Access_token in varchar2);
+      
+    function get_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2) return t_file;
       
     procedure trash_file(
         p_file_id in varchar2

@@ -91,6 +91,81 @@ as
     
     END delete_file;    
     
+    function get_file_from_json(
+        p_file_json in CLOB) return t_file
+    AS
+        l_return_file t_file;
+        l_json JSON;
+        l_labels JSON;
+    BEGIN
+    
+        l_json := JSON(p_file_json);
+        
+        l_return_file.id := json_ext.get_string(l_json, 'id');
+        l_return_file.self_link := json_ext.get_string(l_json, 'selfLink');
+        l_return_file.alternate_link := json_ext.get_string(l_json, 'alternateLink');
+        l_return_file.embed_link := json_ext.get_string(l_json, 'embedLink');
+        l_return_file.icon_link := json_ext.get_string(l_json, 'iconLink');
+        l_return_file.thumbnail_link := json_ext.get_string(l_json, 'thumbnailLink');
+        l_return_file.title := json_ext.get_string(l_json, 'title');
+        l_return_file.description := json_ext.get_string(l_json, 'description');
+        l_return_file.mime_type := json_ext.get_string(l_json, 'mimeType');
+        l_return_file.created_date := json_ext.get_string(l_json, 'createDate');
+        l_return_file.modified_date := json_ext.get_string(l_json, 'modifiedDate');
+        l_return_file.modified_by_me_date := json_ext.get_string(l_json, 'modifiedByMeDate');
+        l_return_file.last_viewed_by_me_date := json_ext.get_string(l_json, 'lastViewedByMeDate');
+        l_return_file.quota_bytes_used := json_ext.get_string(l_json, 'quotaBytesUsed');
+        l_return_file.last_modifying_user_name := json_ext.get_string(l_json, 'lastModifyingUserName');
+        l_return_file.editable := json_ext.get_bool(l_json, 'editable');
+        l_return_file.copyable := json_ext.get_bool(l_json, 'copyable');
+        l_return_file.writers_can_share := json_ext.get_bool(l_json, 'writersCanShare');
+        l_return_file.shared := json_ext.get_bool(l_json, 'shared');
+        l_return_file.app_data_contents := json_ext.get_bool(l_json, 'appDataContents');
+        
+        --Labels
+        l_labels := JSON_EXT.get_json(l_json, 'labels');
+        l_return_file.starred := json_ext.get_bool(l_labels, 'starred');
+        l_return_file.hidden := json_ext.get_bool(l_labels, 'hidden');
+        l_return_file.trashed := json_ext.get_bool(l_labels, 'trashed');
+        l_return_file.restricted := json_ext.get_bool(l_labels, 'restricted');
+        l_return_file.viewed := json_ext.get_bool(l_labels, 'viewed');
+
+  
+        return l_return_file;
+    END get_file_from_json;
+    
+    /*
+    
+        get action: https://developers.google.com/drive/v2/reference/files/get  
+    
+    */
+    
+    function get_file(
+        p_file_id in varchar2
+      , p_access_token in varchar2) return t_file
+    AS
+        l_request_url varchar2(200) := 'https://www.googleapis.com/drive/v2/files/#ID#';
+        l_response CLOB;
+    
+        l_file t_file;
+    BEGIN
+        
+        l_request_url := replace(l_request_url, '#ID#', p_file_id);
+    
+        l_response :=
+            gapi_core.authorized_request(
+                p_access_token => p_access_token
+              , p_url => l_request_url
+              , p_method => 'GET'
+              , p_payload => NULL);
+              
+        l_file := get_file_from_json(l_response);
+        
+        
+    
+        return NULL;
+    END get_file;    
+    
     /*
     
         trash action: https://developers.google.com/drive/v2/reference/files/trash
