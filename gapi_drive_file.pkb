@@ -163,7 +163,7 @@ as
         
         
     
-        return file;
+        return l_file;
     END get_file;    
     
     /*
@@ -214,6 +214,58 @@ as
         return l_file_list;
     
     END list_files;
+    
+    
+    function list_files_sql(
+        p_max_results in NUMBER
+      , p_query in varchar2
+      , p_access_token in varchar2) return t_file_list_sql pipelined
+      
+    AS
+      
+      l_file_sql t_file_sql;
+      l_file_list t_file_list;
+    BEGIN
+    
+      l_file_list := list_files(p_max_results, p_query, p_access_token);
+
+        for i in 1..l_file_list.COUNT
+        loop
+            l_file_sql.kind                     := l_file_list(i).kind;
+            l_file_sql.id                       := l_file_list(i).id;
+            l_file_sql.self_link                := l_file_list(i).self_link;
+            l_file_sql.alternate_link           := l_file_list(i).alternate_link;
+            l_file_sql.embed_link               := l_file_list(i).embed_link;
+            l_file_sql.icon_link                := l_file_list(i).icon_link;
+            l_file_sql.thumbnail_link           := l_file_list(i).thumbnail_link;
+            l_file_sql.title                    := l_file_list(i).title;
+            l_file_sql.description              := l_file_list(i).description;
+            l_file_sql.mime_type                := l_file_list(i).mime_type;
+            l_file_sql.starred                  := case when l_file_list(i).starred then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.hidden                   := case when l_file_list(i).hidden then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.trashed                  := case when l_file_list(i).trashed then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.restricted               := case when l_file_list(i).restricted then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.viewed                   := case when l_file_list(i).viewed then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.parent_id                := l_file_list(i).parent_id;
+            l_file_sql.created_date             := l_file_list(i).created_date;
+            l_file_sql.modified_date            := l_file_list(i).modified_date;
+            l_file_sql.modified_by_me_date      := l_file_list(i).modified_by_me_date;
+            l_file_sql.last_viewed_by_me_date   := l_file_list(i).last_viewed_by_me_date;
+            l_file_sql.quota_bytes_used         := l_file_list(i).quota_bytes_used;
+            l_file_sql.last_modifying_user_name := l_file_list(i).last_modifying_user_name;
+            l_file_sql.editable                 := case when l_file_list(i).editable then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.copyable                 := case when l_file_list(i).copyable then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.writers_can_share        := case when l_file_list(i).writers_can_share then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.shared                   := case when l_file_list(i).shared then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.app_data_contents        := case when l_file_list(i).app_data_contents then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            
+            pipe row (l_file_sql);
+            l_file_sql := NULL;
+        end loop;
+        
+    
+    END list_files_sql;    
+    
     
     /*
     

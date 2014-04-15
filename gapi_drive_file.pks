@@ -54,7 +54,38 @@ as
       , app_data_contents BOOLEAN
     );
     
+    type t_file_sql is record (
+        kind varchar2(20) := 'drive#file'
+      , id varchar2(50)
+      , self_link varchar2(200)
+      , alternate_link varchar2(200)
+      , embed_link varchar2(200)
+      , icon_link varchar2(200)
+      , thumbnail_link varchar2(200)
+      , title varchar2(200)
+      , description varchar2(4000)
+      , mime_type varchar2(200)
+      , starred GAPI_CORE.SQL_BOOL
+      , hidden GAPI_CORE.SQL_BOOL
+      , trashed GAPI_CORE.SQL_BOOL
+      , restricted GAPI_CORE.SQL_BOOL
+      , viewed GAPI_CORE.SQL_BOOL
+      , parent_id varchar2(50)
+      , created_date varchar2(100)
+      , modified_date varchar2(100)
+      , modified_by_me_date varchar2(100)
+      , last_viewed_by_me_date varchar2(100)
+      , quota_bytes_used NUMBER
+      , last_modifying_user_name varchar2(200)
+      , editable GAPI_CORE.SQL_BOOL
+      , copyable GAPI_CORE.SQL_BOOL
+      , writers_can_share GAPI_CORE.SQL_BOOL
+      , shared GAPI_CORE.SQL_BOOL
+      , app_data_contents GAPI_CORE.SQL_BOOL
+    );
+    
     type t_file_list is table of t_file index by PLS_INTEGER;
+    type t_file_list_sql is table of t_file_Sql;
     
     function copy_file(
         p_file_id in varchar2

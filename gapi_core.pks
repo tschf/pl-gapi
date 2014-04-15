@@ -21,6 +21,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 create or replace 
 package gapi_core
 as
+
+    subtype SQL_BOOL is varchar2(5);
+    
+    GC_TRUE         constant varchar2(5) := 'true';
+    GC_FALSE        constant varchar2(5) := 'false';
     
     function authorized_request(
         p_access_token in varchar2
