@@ -27,4 +27,4 @@ This API is still in early stages of development, so usage of this API in produc
 
 ###Documentation
 
-Please refer to the (wiki)[wiki) for full documentation.
+Please refer to the (wiki)[wiki] for full documentation.
