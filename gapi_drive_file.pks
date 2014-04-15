@@ -122,12 +122,12 @@ as
         p_folder_name in varchar2
       , p_access_token in varchar2) return varchar2;
         
-    procedure create_file(
+    function create_file(
         p_data in BLOB
       , p_mime_type in varchar2
       , p_file_name in varchar2
       , p_folder_id in varchar2
-      , p_access_token in varchar2);
+      , p_access_token in varchar2) return varchar2;
       
     procedure update_file(
         p_file_id in varchar2
