@@ -105,6 +105,11 @@ as
       , p_query in varchar2
       , p_access_token in varchar2) return t_file_list;
       
+    function list_files_sql(
+        p_max_results in NUMBER
+      , p_query in varchar2
+      , p_access_token in varchar2) return t_file_list_sql pipelined;    
+      
     procedure trash_file(
         p_file_id in varchar2
       , p_access_token in varchar2);
