@@ -287,3 +287,4 @@ as
     END get_timestamp;
   
 end gapi_core;
+/

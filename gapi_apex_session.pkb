@@ -83,7 +83,4 @@ as
     end get_session_username;
 
 end gapi_apex_session;
-
-
-
-
+/

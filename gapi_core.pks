@@ -56,3 +56,4 @@ as
     function get_timestamp(p_time TIMESTAMP default systimestamp) return varchar2;
 
 end gapi_core;
+/
