@@ -1,3 +1,5 @@
+set define off
+
 @gapi_core.pks;
 @gapi_core.pkb;
 @gapi_auth.pks;
