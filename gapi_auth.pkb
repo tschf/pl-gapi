@@ -22,14 +22,15 @@ create or replace
 package body gapi_auth
 as
 
-    g_client_id varchar2(400) := '';
-    g_client_secret varchar2(400) := '';
+    g_client_id                         varchar2(400) := '';
+    g_client_secret                     varchar2(400) := '';
     
-    g_redirect_uri varchar2(400) := 'http://example.com/apex/#SCHEMA#.GAPI_AUTH.CALLBACK';
-    g_auth_url varchar2(400) := 'https://accounts.google.com/o/oauth2/auth';
+    gc_callback                         constant varchar2(20) := 'GAPI_AUTH.CALLBACK';
+    g_redirect_url                      varchar2(400);
+    g_auth_url                          varchar2(400) := 'https://accounts.google.com/o/oauth2/auth';
     
-    g_token_url varchar2(400) := 'https://accounts.google.com/o/oauth2/token';
-    g_token_grant_type varchar2(20) := 'authorization_code';
+    g_token_url                         varchar2(400) := 'https://accounts.google.com/o/oauth2/token';
+    g_token_grant_type                  varchar2(20) := 'authorization_code';
     
     gc_cookie_name_return_app           constant varchar2(30) := 'GAPI_AUTH.RETURN-APP';
     gc_cookie_name_return_page          constant varchar2(30) := 'GAPI_AUTH.RETURN-PAGE';
@@ -73,6 +74,40 @@ as
       owa_util.redirect_url(get_authorization_url(p_session, p_scope));
     
     END begin_auth;    
+    
+    function get_redirect_url return varchar2
+    as
+        l_protocol varchar2(5);
+        l_host varchar2(150);
+        l_script varchar2(15);
+        
+        l_return varchar2(200);
+    begin
+    
+        if g_redirect_url is not null
+        then
+            
+            l_return := replace(g_redirect_url, '#SCHEMA#', sys_context('userenv','current_schema'));
+            
+        else
+    
+            l_protocol      := owa_util.get_cgi_env('REQUEST_PROTOCOL');
+            l_host          := owa_util.get_cgi_env('HTTP_HOST');
+            l_script        := owa_util.get_cgi_env('SCRIPT_NAME');
+            
+            l_return := l_protocol;
+            l_return := l_return || '://';
+            l_return := l_return || l_host;
+            l_return := l_return || l_script;
+            l_return := l_return || '/';
+            l_return := l_return || sys_context('userenv','current_schema');
+            l_return := l_return || '.';
+            l_return := l_return || gc_callback;
+        end if;
+            
+        return l_return;
+    
+    end get_redirect_url;
 
     --Refer to docs: https://developers.google.com/accounts/docs/OAuth2WebServer
      function get_authorization_url(
@@ -93,8 +128,7 @@ as
 
         l_url_params := replace(l_url_params, '#RESPONSE_TYPE#', 'code');  
         l_url_params := replace(l_url_params, '#CLIENT_ID#', g_client_id);
-        l_url_params := replace(l_url_params, '#REDIRECT_URI#', g_redirect_uri);
-        l_url_params := replace(l_url_params, '#SCHEMA#', sys_context('userenv','current_schema'));
+        l_url_params := replace(l_url_params, '#REDIRECT_URI#', get_redirect_url);
         l_url_params := replace(l_url_params, '#SCOPE#', p_scope);
         l_url_params := replace(l_url_params, '#STATE#', p_state);
   
@@ -124,6 +158,8 @@ as
         
         l_unescaped_state varchar2(200);
         l_endpoint_url varchar2(200);
+        
+        l_set_access_token BOOLEAN;
     BEGIN
     
         l_token_req_payload := 
@@ -135,7 +171,7 @@ as
             l_token_req_payload := replace(l_token_req_payload, '#CODE#', code);
             l_token_req_payload := replace(l_token_req_payload, '#CLIENT_ID#', g_client_id);
             l_token_req_payload := replace(l_token_req_payload, '#CLIENT_SECRET#', g_client_secret);
-            l_token_req_payload := replace(l_token_req_payload, '#REDIRECT_URI#', g_redirect_uri);
+            l_token_req_payload := replace(l_token_req_payload, '#REDIRECT_URI#', get_redirect_url);
             l_token_req_payload := replace(l_token_req_payload, '#GRANT_TYPE#', g_token_grant_type);
             l_token_req_payload := replace(l_token_req_payload, '#SCHEMA#', sys_context('userenv','current_schema'));
 
@@ -187,6 +223,8 @@ as
                         utl_http.end_response(
                             r => l_token_res);
             END;
+            
+            l_response_json := JSON(l_response);
             
         END IF;
         
