@@ -41,10 +41,10 @@ as
       , restricted BOOLEAN
       , viewed BOOLEAN
       , parent_id varchar2(50)
-      , created_date varchar2(100)
-      , modified_date varchar2(100)
-      , modified_by_me_date varchar2(100)
-      , last_viewed_by_me_date varchar2(100)
+      , created_date timestamp with time zone
+      , modified_date timestamp with time zone
+      , modified_by_me_date timestamp with time zone
+      , last_viewed_by_me_date timestamp with time zone
       , quota_bytes_used NUMBER
       , last_modifying_user_name varchar2(200)
       , editable BOOLEAN
@@ -71,10 +71,10 @@ as
       , restricted GAPI_CORE.SQL_BOOL
       , viewed GAPI_CORE.SQL_BOOL
       , parent_id varchar2(50)
-      , created_date varchar2(100)
-      , modified_date varchar2(100)
-      , modified_by_me_date varchar2(100)
-      , last_viewed_by_me_date varchar2(100)
+      , created_date timestamp with time zone
+      , modified_date timestamp with time zone
+      , modified_by_me_date timestamp with time zone
+      , last_viewed_by_me_date timestamp with time zone
       , quota_bytes_used NUMBER
       , last_modifying_user_name varchar2(200)
       , editable GAPI_CORE.SQL_BOOL

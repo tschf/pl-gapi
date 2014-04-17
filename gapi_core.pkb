@@ -285,6 +285,39 @@ as
     
         RETURN l_Date_cmp || 'T' || l_time_cmp || 'Z';    
     END get_timestamp;
+    
+    /*
+    
+        The times are returned according to RFC3399: https://tools.ietf.org/html/rfc3339
+        
+        Use this function to return the timestamp string, back into a timestamp object with 
+        the timezone of the database attached.
+        
+        Resources: 
+        
+        http://blog.watashii.com/2009/11/oracle-timezone-conversions-gmt-to-localtime/
+        http://orastory.wordpress.com/2007/05/15/dates-timestamps-and-iso-8601/
+        http://docs.oracle.com/cd/B19306_01/server.102/b14200/sql_elements004.htm
+        http://www.techonthenet.com/oracle/functions/from_tz.php
+    
+    */
+    
+    function get_local_timestamp(
+        p_timestamp in varchar2
+      , p_source_time_zone in varchar2 default '+00:00'
+      , p_dest_time_zone in varchar2 default sessiontimezone) return timestamp with time zone
+    AS
+        l_return_timestamp timestamp with time zone;
+    BEGIN
+    
+        l_return_timestamp := to_timestamp(p_timestamp, 'yyyy-mm-dd"T"hh24:mi:ss.ff3"Z"');
+        l_return_timestamp := from_tz(l_return_timestamp, p_source_time_zone);
+        l_return_timestamp := l_return_timestamp at time zone p_dest_time_zone;
+        
+        return l_return_timestamp;
+        
+    
+    END get_local_timestamp;    
   
 end gapi_core;
 /

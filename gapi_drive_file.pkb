@@ -110,10 +110,10 @@ as
         l_return_file.title := json_ext.get_string(l_json, 'title');
         l_return_file.description := json_ext.get_string(l_json, 'description');
         l_return_file.mime_type := json_ext.get_string(l_json, 'mimeType');
-        l_return_file.created_date := json_ext.get_string(l_json, 'createdDate');
-        l_return_file.modified_date := json_ext.get_string(l_json, 'modifiedDate');
-        l_return_file.modified_by_me_date := json_ext.get_string(l_json, 'modifiedByMeDate');
-        l_return_file.last_viewed_by_me_date := json_ext.get_string(l_json, 'lastViewedByMeDate');
+        l_return_file.created_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'createdDate'));
+        l_return_file.modified_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'modifiedDate'));
+        l_return_file.modified_by_me_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'modifiedByMeDate'));
+        l_return_file.last_viewed_by_me_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'lastViewedByMeDate'));
         l_return_file.quota_bytes_used := json_ext.get_string(l_json, 'quotaBytesUsed');
         l_return_file.last_modifying_user_name := json_ext.get_string(l_json, 'lastModifyingUserName');
         l_return_file.editable := json_ext.get_bool(l_json, 'editable');

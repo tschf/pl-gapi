@@ -54,6 +54,11 @@ as
         p_password in varchar2);
         
     function get_timestamp(p_time TIMESTAMP default systimestamp) return varchar2;
+    
+    function get_local_timestamp(
+        p_timestamp in varchar2
+      , p_source_time_zone in varchar2 default '+00:00'
+      , p_dest_time_zone in varchar2 default sessiontimezone) return timestamp with time zone;
 
 end gapi_core;
 /
