@@ -24,6 +24,19 @@ as
 
     g_wallet_path varchar2(400) := '';
     g_wallet_password varchar2(400) := '';
+    
+    procedure set_header(
+  
+        p_seq in NUMBER
+      , p_name in varchar2
+      , p_value in varchar2)
+    as
+    BEGIN
+  
+        apex_web_service.g_request_headers(p_seq).name := p_name;
+        apex_web_service.g_request_headers(p_seq).value := p_value;
+  
+    END set_header;      
 
     function authorized_request(
       p_access_token in varchar2
