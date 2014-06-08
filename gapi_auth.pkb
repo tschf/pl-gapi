@@ -142,13 +142,9 @@ as
       , state in varchar2)
     AS
         
-        l_token_req utl_http.req;
-        l_token_res utl_http.resp;
-        
         l_token_req_payload varchar2(300);
         
         l_response CLOB;
-        l_response_tmp varchar2(1024);
         l_response_json JSON;
         
         l_app_cookie              owa_cookie.cookie;
@@ -157,7 +153,6 @@ as
         l_refresh_token_cookie    owa_cookie.cookie;        
         
         l_unescaped_state varchar2(200);
-        l_endpoint_url varchar2(200);
         
         l_set_access_token BOOLEAN;
     BEGIN
@@ -174,55 +169,18 @@ as
             l_token_req_payload := replace(l_token_req_payload, '#REDIRECT_URI#', get_redirect_url);
             l_token_req_payload := replace(l_token_req_payload, '#GRANT_TYPE#', g_token_grant_type);
             l_token_req_payload := replace(l_token_req_payload, '#SCHEMA#', sys_context('userenv','current_schema'));
-
-            utl_http.set_wallet(
-                path => gapi_core.get_wallet_path
-              , password => gapi_core.get_wallet_password);
-      
-            l_token_req := utl_http.begin_request(
-                url => g_token_url
-              , method => 'POST');
-  
-            utl_http.set_header(
-                r => l_token_req
-              , name => 'Content-length'
-              , value => length(l_token_req_payload));
-  
-      
-            utl_http.set_header(
-                r => l_token_req
-              , name => 'Content-Type'
-              , value => 'application/x-www-form-urlencoded');
-  
-            utl_http.write_text(
-                r => l_token_req
-              , data => utl_url.escape(l_token_req_payload));
-  
-      
-            l_token_res := utl_http.get_response(
-                r => l_token_req);
-  
-            BEGIN
-  
-                LOOP
-          
-                    utl_http.read_line(
-                        r => l_token_res
-                      , data => l_response_tmp
-                      , remove_crlf => FALSE);
-                      
-                    l_response := l_response || l_response_tmp;
-          
-                END LOOP;
-      
-            EXCEPTION
-            WHEN
-                UTL_HTTP.END_OF_BODY
-                    THEN
             
-                        utl_http.end_response(
-                            r => l_token_res);
-            END;
+            gapi_core.set_header(1, 'Content-length', length(l_token_req_payload));
+            gapi_core.set_header(2, 'Content-Type', 'application/x-www-form-urlencoded');  
+  
+            l_response :=
+                apex_web_service.make_rest_request(
+                    p_url => g_token_url 
+                  , p_http_method => 'POST'
+                  , p_body => l_token_req_payload
+                  , p_Wallet_path => gapi_core.get_Wallet_path
+                  , p_wallet_pwd => gapi_core.get_wallet_password
+                );            
             
             l_response_json := JSON(l_response);
             
@@ -272,9 +230,6 @@ as
         l_response CLOB;
         l_response_tmp varchar2(1024);
         l_response_json JSON;
-        
-        l_token_req utl_http.req;
-        l_token_res utl_http.resp;
     
     BEGIN
     
@@ -283,55 +238,18 @@ as
         l_token_req_payload := replace(l_token_req_payload, '#CLIENT_ID#', g_client_id);
         l_token_req_payload := replace(l_token_req_payload, '#CLIENT_SECRET#', g_client_secret);
         l_token_req_payload := replace(l_token_req_payload, '#GRANT_TYPE#', 'refresh_token');
-      
-        utl_http.set_wallet(
-            path => gapi_core.get_wallet_path
-          , password => gapi_core.get_wallet_password);
-      
-        l_token_req := utl_http.begin_request(
-            url => g_token_url
-          , method => 'POST');
-  
-        utl_http.set_header(
-            r => l_token_req
-          , name => 'Content-length'
-          , value => length(l_token_req_payload));
-  
-      
-        utl_http.set_header(
-            r => l_token_req
-          , name => 'Content-Type'
-          , value => 'application/x-www-form-urlencoded');
-  
-        utl_http.write_text(
-            r => l_token_req
-          , data => utl_url.escape(l_token_req_payload));
-  
-      
-        l_token_res := utl_http.get_response(
-            r => l_token_req);
-  
-        BEGIN
-  
-            LOOP
-          
-                utl_http.read_line(
-                    r => l_token_res
-                  , data => l_response_tmp
-                  , remove_crlf => FALSE);
-                  
-                l_response := l_response || l_response_tmp;
-          
-            END LOOP;
-      
-        EXCEPTION
-            WHEN
-                UTL_HTTP.END_OF_BODY
-                    THEN
-            
-                        utl_http.end_response(
-                            r => l_token_res);
-        END;
+        
+        gapi_core.set_header(1, 'Content-length', length(l_token_req_payload));
+        gapi_core.set_header(2, 'Content-Type', 'application/x-www-form-urlencoded');        
+        
+        l_response :=
+            apex_web_service.make_rest_request(
+                p_url => g_token_url 
+              , p_http_method => 'POST'
+              , p_body => l_token_req_payload
+              , p_Wallet_path => gapi_core.get_Wallet_path
+              , p_wallet_pwd => gapi_core.get_wallet_password
+            );       
      
         l_response_json := JSON(l_response);
         
