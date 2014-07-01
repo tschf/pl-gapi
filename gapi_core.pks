@@ -26,6 +26,11 @@ as
     
     GC_TRUE         constant varchar2(5) := 'true';
     GC_FALSE        constant varchar2(5) := 'false';
+
+    procedure set_header(  
+        p_seq in NUMBER
+      , p_name in varchar2
+      , p_value in varchar2);
     
     function authorized_request(
         p_access_token in varchar2
