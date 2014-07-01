@@ -215,8 +215,7 @@ as
     WHEN
         OTHERS
             THEN
-                htp.p(utl_http.get_detailed_sqlerrm);
-                htp.p(sqlerrm);
+                htp.print(sqlerrm);
     
     END callback;
     
