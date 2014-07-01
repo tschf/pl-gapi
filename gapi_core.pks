@@ -22,6 +22,12 @@ create or replace
 package gapi_core
 as
 
+    type t_response_error is record (
+      code NUMBER
+    , message varchar2(4000)
+    , is_error BOOLEAN := true
+    );
+
     subtype SQL_BOOL is varchar2(5);
     
     GC_TRUE         constant varchar2(5) := 'true';

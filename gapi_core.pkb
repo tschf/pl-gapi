@@ -36,7 +36,31 @@ as
         apex_web_service.g_request_headers(p_seq).name := p_name;
         apex_web_service.g_request_headers(p_seq).value := p_value;
   
-    END set_header;      
+    END set_header;    
+
+    function get_response_error(
+        p_response in CLOB
+    ) return t_Response_error
+    AS
+        l_response_json JSON;
+        l_error_json JSON;
+        l_response_error t_response_error;
+    BEGIN
+    
+        l_response_json := JSON(p_response);
+        l_error_json := json_ext.get_json(l_response_json, 'error');
+      
+        if l_error_json IS NULL
+        then
+            l_response_error.is_error := false;
+        else
+            l_Response_error.code := json_ext.get_number(l_error_json, 'code');
+            l_Response_error.message := json_ext.get_string(l_error_json, 'message');
+        end if;
+      
+        return l_response_error;
+    
+    END get_response_error;  
 
     function authorized_request(
       p_access_token in varchar2
@@ -51,6 +75,7 @@ as
     AS
         l_return CLOB;
         l_response_tmp varchar2(1024);
+        l_response_error t_response_error;
     BEGIN
   
         set_header(1, 'Content-Type', p_content_type);
@@ -71,6 +96,20 @@ as
           , p_wallet_path   => g_wallet_path
           , p_wallet_pwd    => g_wallet_password
         );
+
+        l_response_error := gapi_core.get_response_error(l_return);
+
+        if l_response_error.is_error
+        then
+          raise_application_error(
+            -20001
+          , 'Unexpected error:'
+            || 'Google Error Code-' 
+            || l_response_error.code 
+            || '; Google Error Message-'
+            || l_Response_error.message
+            );
+        end if;
 
         return l_return;
     
