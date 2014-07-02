@@ -13,7 +13,7 @@ The design of Authorization is to return the refresh token in the URL. APEX esca
 
 ###Contributing
 
-Please, if you have a need for any particular Google API - do extend this library and create a pull request so that this can eventually be *the* best library for integrating with APEX. Each service tends to have a set of functions for each resource. So as far as package naming goes, please follow the convention: GAPI\_*SERVICE*\_*RESOURCE* - where *SERVICE* is the Google service such as Calendar, Drive, etc and *RESOURCE* is the component of the API.
+Please, if you have a need for any particular Google API - do extend this library and create a pull request. Each service tends to have a set of functions for each resource. So as far as package naming goes, please follow the convention: GAPI\_*SERVICE*\_*RESOURCE* - where *SERVICE* is the Google service such as Calendar, Drive, etc and *RESOURCE* is the component of the API.
 
 Please also extend the sample application with a new tab for the *SERVICE* - with a region at the top for the authorization, and then a region below for each action, wherever possible.
 
