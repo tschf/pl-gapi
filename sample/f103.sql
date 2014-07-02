@@ -12,7 +12,7 @@ prompt  APPLICATION 103 - Google API Tester
 -- Application Export:
 --   Application:     103
 --   Name:            Google API Tester
---   Date and Time:   12:27 Tuesday July 1, 2014
+--   Date and Time:   07:57 Wednesday July 2, 2014
 --   Exported By:     TRENT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -155,7 +155,7 @@ wwv_flow_api.create_flow(
   p_alias => nvl(wwv_flow_application_install.get_application_alias,'F_100'),
   p_page_view_logging => 'YES',
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20140701122058',
+  p_checksum_salt_last_reset => '20140702075628',
   p_max_session_length_sec=> null,
   p_compatibility_mode=> '4.2',
   p_html_escaping_mode=> 'E',
@@ -194,7 +194,7 @@ wwv_flow_api.create_flow(
   p_include_legacy_javascript=> 'Y',
   p_default_error_display_loc=> 'INLINE_WITH_FIELD_AND_NOTIFICATION',
   p_last_updated_by => 'TRENT',
-  p_last_upd_yyyymmddhh24miss=> '20140701122058',
+  p_last_upd_yyyymmddhh24miss=> '20140702075628',
   p_ui_type_name => null,
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
@@ -910,7 +910,7 @@ wwv_flow_api.create_page (
  ,p_protection_level => 'D'
  ,p_cache_page_yn => 'N'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140517140646'
+ ,p_last_upd_yyyymmddhh24miss => '20140702075539'
   );
 null;
  
@@ -1130,7 +1130,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Redirect Url',
-  p_source=>'gapi_drive_file.g_scope_full',
+  p_source=>'gapi_drive.scope_full',
   p_source_type=> 'FUNCTION',
   p_display_as=> 'NATIVE_TEXT_FIELD',
   p_lov_display_null=> 'NO',
@@ -1247,7 +1247,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140416134701'
+ ,p_last_upd_yyyymmddhh24miss => '20140702075628'
   );
 null;
  
@@ -1306,15 +1306,10 @@ s:=s||'<style type="text/css">'||unistr('\000a')||
 '<p>You should find a tab for each service that currently has an interface implemented in the library. At the top of the page, you will find an Authorization section foll';
 
 s:=s||'owed by - wherever possible - a region for each action of the libary.</p>'||unistr('\000a')||
-'<p>Completed services:</p>'||unistr('\000a')||
-'<ul class="progressList">'||unistr('\000a')||
-'<li>N/A</li>'||unistr('\000a')||
-'</ul>'||unistr('\000a')||
-''||unistr('\000a')||
-'<p>In progress services:</p>'||unistr('\000a')||
-''||unistr('\000a')||
+'<p>Services:</p>'||unistr('\000a')||
 '<ul class="progressList">'||unistr('\000a')||
 '<li>Google Drive</li>'||unistr('\000a')||
+'<li>Google Calendar</li>'||unistr('\000a')||
 '</ul>';
 
 wwv_flow_api.create_page_plug (
@@ -1404,7 +1399,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140701110644'
+ ,p_last_upd_yyyymmddhh24miss => '20140702042931'
   );
 null;
  
@@ -2542,11 +2537,7 @@ declare
   l_clob clob;
   l_length number := 1;
 begin
-p:=p||'declare'||unistr('\000a')||
-''||unistr('\000a')||
-'    l_access_token varchar2(100);'||unistr('\000a')||
-''||unistr('\000a')||
-'begin'||unistr('\000a')||
+p:=p||'begin'||unistr('\000a')||
 '    '||unistr('\000a')||
 '    :P2_RETURN_FOLDER_ID :='||unistr('\000a')||
 '        gapi_drive_file.create_folder('||unistr('\000a')||
