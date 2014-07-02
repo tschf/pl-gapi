@@ -21,8 +21,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 create or replace
 package gapi_drive_file
 as
-
-    g_scope_full constant varchar2(50) := 'https://www.googleapis.com/auth/drive';
     
     type t_file is record (
         kind varchar2(20) := 'drive#file'
