@@ -9,6 +9,7 @@ set define off
 @gapi_cal_calendar.pkb;
 @gapi_cal_event.pks;
 @gapi_cal_event.pkb;
+@gapi_drive.pks;
 @gapi_drive_file.pks;
 @gapi_drive_file.pkb;
 @gapi_drive_about.pks;
