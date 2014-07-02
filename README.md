@@ -5,7 +5,7 @@ A PL/SQL Google API written primarily for Oracle Application Express (APEX).
 
 ###Motivation
 
-This started with wanting to figure out how to interface with Google data from APEX, and began with inserting and fetching data from Calendar (which is not yet included in this libary). It then tranformed to interfacing with Drive - that is, being able to upload files into google drive, and storing the reference in a table. That inspired me to begin a project that is more easily integrated, with a set of packages for each Google service independent of one another.
+This started with wanting to figure out how to interface with Google data from APEX, and began with inserting and fetching data from Calendar. It then tranformed to interfacing with Drive - that is, being able to upload files into google drive, and storing the reference in a table. That inspired me to begin a project that is more easily integrated, with a set of packages for each Google service independent of one another.
 
 ###Authorization
 
