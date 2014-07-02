@@ -36,7 +36,7 @@ as
         l_change.self_link := json_ext.get_string(l_json, 'selfLink');
         l_change.deleted := json_ext.get_bool(l_json, 'deleted');
         l_change.modification_date :=   
-            gapi_core.get_local_timestamp(
+            gapi.get_local_timestamp(
                 json_ext.get_string(l_json, 'modificationDate') 
             );
         
@@ -61,7 +61,7 @@ as
         l_request_url := replace(l_request_url, '#ID#', p_change_id);
     
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'
@@ -91,7 +91,7 @@ as
     BEGIN
     
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'
@@ -129,7 +129,7 @@ as
             l_change_sql.id                 := l_change_list(i).id;
             l_change_sql.file_id            := l_change_list(i).file_id;
             l_change_sql.self_link          := l_change_list(i).self_link;
-            l_change_sql.deleted            := case when l_change_list(i).deleted then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_change_sql.deleted            := case when l_change_list(i).deleted then GAPI.GC_TRUE else GAPI.GC_FALSE end;
             l_change_sql.modification_date  := l_change_list(i).modification_date;
             
             pipe row (l_change_sql);

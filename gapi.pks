@@ -19,7 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 *******************************************************************/
 
 create or replace 
-package gapi_core
+package gapi
 as
 
     type t_response_error is record (
@@ -71,5 +71,5 @@ as
       , p_source_time_zone in varchar2 default '+00:00'
       , p_dest_time_zone in varchar2 default sessiontimezone) return timestamp with time zone;
 
-end gapi_core;
+end gapi;
 /

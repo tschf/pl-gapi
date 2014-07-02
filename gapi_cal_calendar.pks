@@ -51,11 +51,11 @@ as
       , color_id varchar2(10)
       , background_color varchar2(10)
       , foreground_color varchar2(10)
-      , hidden GAPI_CORE.SQL_BOOL
-      , selected GAPI_CORE.SQL_BOOL
+      , hidden GAPI.SQL_BOOL
+      , selected GAPI.SQL_BOOL
       , access_role varchar2(20)
-      , primary GAPI_CORE.SQL_BOOL
-      , deleted GAPI_CORE.SQL_BOOL    
+      , primary GAPI.SQL_BOOL
+      , deleted GAPI.SQL_BOOL    
     );
     
     type t_calendar_list is table of t_calendar index by PLS_INTEGER;    

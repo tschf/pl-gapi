@@ -170,16 +170,16 @@ as
             l_token_req_payload := replace(l_token_req_payload, '#GRANT_TYPE#', g_token_grant_type);
             l_token_req_payload := replace(l_token_req_payload, '#SCHEMA#', sys_context('userenv','current_schema'));
             
-            gapi_core.set_header(1, 'Content-length', length(l_token_req_payload));
-            gapi_core.set_header(2, 'Content-Type', 'application/x-www-form-urlencoded');  
+            gapi.set_header(1, 'Content-length', length(l_token_req_payload));
+            gapi.set_header(2, 'Content-Type', 'application/x-www-form-urlencoded');  
   
             l_response :=
                 apex_web_service.make_rest_request(
                     p_url => g_token_url 
                   , p_http_method => 'POST'
                   , p_body => l_token_req_payload
-                  , p_Wallet_path => gapi_core.get_Wallet_path
-                  , p_wallet_pwd => gapi_core.get_wallet_password
+                  , p_Wallet_path => gapi.get_Wallet_path
+                  , p_wallet_pwd => gapi.get_wallet_password
                 );            
             
             l_response_json := JSON(l_response);
@@ -238,16 +238,16 @@ as
         l_token_req_payload := replace(l_token_req_payload, '#CLIENT_SECRET#', g_client_secret);
         l_token_req_payload := replace(l_token_req_payload, '#GRANT_TYPE#', 'refresh_token');
         
-        gapi_core.set_header(1, 'Content-length', length(l_token_req_payload));
-        gapi_core.set_header(2, 'Content-Type', 'application/x-www-form-urlencoded');        
+        gapi.set_header(1, 'Content-length', length(l_token_req_payload));
+        gapi.set_header(2, 'Content-Type', 'application/x-www-form-urlencoded');        
         
         l_response :=
             apex_web_service.make_rest_request(
                 p_url => g_token_url 
               , p_http_method => 'POST'
               , p_body => l_token_req_payload
-              , p_Wallet_path => gapi_core.get_Wallet_path
-              , p_wallet_pwd => gapi_core.get_wallet_password
+              , p_Wallet_path => gapi.get_Wallet_path
+              , p_wallet_pwd => gapi.get_wallet_password
             );       
      
         l_response_json := JSON(l_response);

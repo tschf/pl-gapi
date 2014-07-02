@@ -71,7 +71,7 @@ as
     BEGIN
         
         l_response := 
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_Request_url
               , p_method => 'GET'
@@ -118,11 +118,11 @@ as
             l_calendar.color_id := l_calendar_list(i).color_id;
             l_calendar.background_color:= l_calendar_list(i).background_color;
             l_calendar.foreground_color := l_calendar_list(i).foreground_color;
-            l_calendar.hidden := case when l_calendar_list(i).hidden then gapi_core.GC_TRUE else gapi_core.GC_FALSE end;
-            l_calendar.selected:= case when l_calendar_list(i).selected then gapi_core.GC_TRUE else gapi_core.GC_FALSE end;
+            l_calendar.hidden := case when l_calendar_list(i).hidden then gapi.GC_TRUE else gapi.GC_FALSE end;
+            l_calendar.selected:= case when l_calendar_list(i).selected then gapi.GC_TRUE else gapi.GC_FALSE end;
             l_calendar.access_role := l_calendar_list(i).access_role;
-            l_calendar.primary := case when l_calendar_list(i).primary then gapi_core.GC_TRUE else gapi_core.GC_FALSE end;
-            l_calendar.deleted := case when l_calendar_list(i).deleted then gapi_core.GC_TRUE else gapi_core.GC_FALSE end;
+            l_calendar.primary := case when l_calendar_list(i).primary then gapi.GC_TRUE else gapi.GC_FALSE end;
+            l_calendar.deleted := case when l_calendar_list(i).deleted then gapi.GC_TRUE else gapi.GC_FALSE end;
             
             pipe row (l_calendar);
             l_calendar := NULL;
@@ -154,7 +154,7 @@ as
         l_payload.put('summary', p_title);
     
         l_response := 
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_Request_url
               , p_method => 'POST'

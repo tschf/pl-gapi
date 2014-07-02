@@ -64,7 +64,7 @@ as
     BEGIN
     
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'

@@ -51,7 +51,7 @@ as
       , color_id varchar2(10)
       , start_date timestamp with time zone
       , end_date timestamp with time zone
-      , all_day GAPI_CORE.SQL_BOOL default GAPI_CORE.GC_FALSE
+      , all_day GAPI.SQL_BOOL default GAPI.GC_FALSE
     );    
     
     type t_event_list is table of t_event index by PLS_INTEGER;

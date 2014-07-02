@@ -53,8 +53,8 @@ as
             l_start.put('date', to_char(p_start_date,'yyyy-mm-dd'));
             l_end.put('date', to_char(p_end_date,'yyyy-mm-dd'));            
         else
-            l_start.put('dateTime', gapi_core.get_timestamp(p_start_date));
-            l_end.put('dateTime', gapi_core.get_timestamp(p_end_date));            
+            l_start.put('dateTime', gapi.get_timestamp(p_start_date));
+            l_end.put('dateTime', gapi.get_timestamp(p_end_date));            
         
         end if;
         
@@ -105,7 +105,7 @@ as
             );
         
         l_response := 
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_Request_url
               , p_method => 'POST'
@@ -157,7 +157,7 @@ as
             );
             
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'PATCH'
@@ -188,7 +188,7 @@ as
         l_request_url := replace(l_request_url, '#EVENT_ID#', p_event_id);
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'DELETE'
@@ -219,8 +219,8 @@ as
         l_event.id := json_ext.get_string(l_json, 'id');
         l_event.status := json_ext.get_string(l_json, 'status');
         l_event.html_link:= json_ext.get_string(l_json, 'htmlLink');
-        l_event.created := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'created'));
-        l_event.updated:= gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'updated'));
+        l_event.created := gapi.get_local_timestamp(json_ext.get_string(l_json, 'created'));
+        l_event.updated:= gapi.get_local_timestamp(json_ext.get_string(l_json, 'updated'));
         l_event.summary := json_ext.get_string(l_json, 'summary');
         l_event.description := json_ext.get_string(l_json, 'description');
         l_event.location := json_ext.get_string(l_json, 'location');
@@ -270,7 +270,7 @@ as
         
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'
@@ -317,7 +317,7 @@ as
         l_request_url := replace(l_request_url, '#QUERY#', p_query);                
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'
@@ -376,7 +376,7 @@ as
             l_event.color_id        := l_event_list(i).color_id;
             l_event.start_date      := l_event_list(i).start_date;
             l_event.end_date        := l_event_list(i).end_date;
-            l_event.all_day         := case when l_event_list(i).all_day then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_event.all_day         := case when l_event_list(i).all_day then GAPI.GC_TRUE else GAPI.GC_FALSE end;
             
             pipe row (l_event);
             

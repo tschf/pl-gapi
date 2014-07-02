@@ -19,7 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 *******************************************************************/
 
 create or replace 
-package body gapi_core
+package body gapi
 as 
 
     g_wallet_path varchar2(400) := '';
@@ -97,7 +97,7 @@ as
           , p_wallet_pwd    => g_wallet_password
         );
 
-        l_response_error := gapi_core.get_response_error(l_return);
+        l_response_error := gapi.get_response_error(l_return);
 
         if l_response_error.is_error
         then
@@ -260,5 +260,5 @@ as
     
     END get_local_timestamp;    
   
-end gapi_core;
+end gapi;
 /

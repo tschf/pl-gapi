@@ -48,7 +48,7 @@ as
         l_payload.put('title', p_title);
         
         l_response := 
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_Request_url
               , p_method => 'POST'
@@ -80,7 +80,7 @@ as
         l_request_url := replace(l_request_url, '#ID#', p_file_id);
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'DELETE'
@@ -110,10 +110,10 @@ as
         l_return_file.title := json_ext.get_string(l_json, 'title');
         l_return_file.description := json_ext.get_string(l_json, 'description');
         l_return_file.mime_type := json_ext.get_string(l_json, 'mimeType');
-        l_return_file.created_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'createdDate'));
-        l_return_file.modified_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'modifiedDate'));
-        l_return_file.modified_by_me_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'modifiedByMeDate'));
-        l_return_file.last_viewed_by_me_date := gapi_core.get_local_timestamp(json_ext.get_string(l_json, 'lastViewedByMeDate'));
+        l_return_file.created_date := gapi.get_local_timestamp(json_ext.get_string(l_json, 'createdDate'));
+        l_return_file.modified_date := gapi.get_local_timestamp(json_ext.get_string(l_json, 'modifiedDate'));
+        l_return_file.modified_by_me_date := gapi.get_local_timestamp(json_ext.get_string(l_json, 'modifiedByMeDate'));
+        l_return_file.last_viewed_by_me_date := gapi.get_local_timestamp(json_ext.get_string(l_json, 'lastViewedByMeDate'));
         l_return_file.quota_bytes_used := json_ext.get_string(l_json, 'quotaBytesUsed');
         l_return_file.last_modifying_user_name := json_ext.get_string(l_json, 'lastModifyingUserName');
         l_return_file.editable := json_ext.get_bool(l_json, 'editable');
@@ -153,7 +153,7 @@ as
         l_request_url := replace(l_request_url, '#ID#', p_file_id);
     
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'
@@ -191,7 +191,7 @@ as
         l_request_url := utl_url.escape(l_request_url);
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'GET'
@@ -241,11 +241,11 @@ as
             l_file_sql.title                    := l_file_list(i).title;
             l_file_sql.description              := l_file_list(i).description;
             l_file_sql.mime_type                := l_file_list(i).mime_type;
-            l_file_sql.starred                  := case when l_file_list(i).starred then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.hidden                   := case when l_file_list(i).hidden then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.trashed                  := case when l_file_list(i).trashed then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.restricted               := case when l_file_list(i).restricted then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.viewed                   := case when l_file_list(i).viewed then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.starred                  := case when l_file_list(i).starred then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.hidden                   := case when l_file_list(i).hidden then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.trashed                  := case when l_file_list(i).trashed then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.restricted               := case when l_file_list(i).restricted then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.viewed                   := case when l_file_list(i).viewed then GAPI.GC_TRUE else GAPI.GC_FALSE end;
             l_file_sql.parent_id                := l_file_list(i).parent_id;
             l_file_sql.created_date             := l_file_list(i).created_date;
             l_file_sql.modified_date            := l_file_list(i).modified_date;
@@ -253,11 +253,11 @@ as
             l_file_sql.last_viewed_by_me_date   := l_file_list(i).last_viewed_by_me_date;
             l_file_sql.quota_bytes_used         := l_file_list(i).quota_bytes_used;
             l_file_sql.last_modifying_user_name := l_file_list(i).last_modifying_user_name;
-            l_file_sql.editable                 := case when l_file_list(i).editable then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.copyable                 := case when l_file_list(i).copyable then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.writers_can_share        := case when l_file_list(i).writers_can_share then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.shared                   := case when l_file_list(i).shared then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
-            l_file_sql.app_data_contents        := case when l_file_list(i).app_data_contents then GAPI_CORE.GC_TRUE else GAPI_CORE.GC_FALSE end;
+            l_file_sql.editable                 := case when l_file_list(i).editable then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.copyable                 := case when l_file_list(i).copyable then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.writers_can_share        := case when l_file_list(i).writers_can_share then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.shared                   := case when l_file_list(i).shared then GAPI.GC_TRUE else GAPI.GC_FALSE end;
+            l_file_sql.app_data_contents        := case when l_file_list(i).app_data_contents then GAPI.GC_TRUE else GAPI.GC_FALSE end;
             
             pipe row (l_file_sql);
             l_file_sql := NULL;
@@ -284,7 +284,7 @@ as
         l_request_url := replace(l_request_url, '#ID#', p_file_id);
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'POST'
@@ -311,7 +311,7 @@ as
         l_request_url := replace(l_Request_url, '#ID#', p_file_id);
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_method => 'POST'
@@ -342,7 +342,7 @@ as
         l_payload.put('mimeType', 'application/vnd.google-apps.folder');
         l_payload.put('title', p_folder_name);
         
-        l_response := gapi_core.authorized_request(
+        l_response := gapi.authorized_request(
             p_access_token => p_access_token
           , p_url => l_request_url
           , p_method => 'POST'
@@ -376,7 +376,7 @@ as
         l_file_id varchar2(200);    
     BEGIN
         
-        l_response := gapi_core.authorized_request(
+        l_response := gapi.authorized_request(
             p_access_token => p_access_token
           , p_url => l_insert_url
           , p_payload => p_data
@@ -446,7 +446,7 @@ as
         end if;    
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_payload => l_payload.to_char
@@ -472,7 +472,7 @@ as
         l_request_url := replace(l_request_url, '#ID#', p_file_id);
         
         l_response :=
-            gapi_core.authorized_request(
+            gapi.authorized_request(
                 p_access_token => p_access_token
               , p_url => l_request_url
               , p_payload => NULL

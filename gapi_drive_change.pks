@@ -36,7 +36,7 @@ as
       , id NUMBER
       , file_id varchar2(200)
       , self_link varchar2(200)
-      , deleted GAPI_CORE.SQL_BOOL
+      , deleted GAPI.SQL_BOOL
       , modification_date varchar2(200)
     );
     

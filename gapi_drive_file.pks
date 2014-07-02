@@ -65,11 +65,11 @@ as
       , title varchar2(200)
       , description varchar2(4000)
       , mime_type varchar2(200)
-      , starred GAPI_CORE.SQL_BOOL
-      , hidden GAPI_CORE.SQL_BOOL
-      , trashed GAPI_CORE.SQL_BOOL
-      , restricted GAPI_CORE.SQL_BOOL
-      , viewed GAPI_CORE.SQL_BOOL
+      , starred GAPI.SQL_BOOL
+      , hidden GAPI.SQL_BOOL
+      , trashed GAPI.SQL_BOOL
+      , restricted GAPI.SQL_BOOL
+      , viewed GAPI.SQL_BOOL
       , parent_id varchar2(50)
       , created_date timestamp with time zone
       , modified_date timestamp with time zone
@@ -77,11 +77,11 @@ as
       , last_viewed_by_me_date timestamp with time zone
       , quota_bytes_used NUMBER
       , last_modifying_user_name varchar2(200)
-      , editable GAPI_CORE.SQL_BOOL
-      , copyable GAPI_CORE.SQL_BOOL
-      , writers_can_share GAPI_CORE.SQL_BOOL
-      , shared GAPI_CORE.SQL_BOOL
-      , app_data_contents GAPI_CORE.SQL_BOOL
+      , editable GAPI.SQL_BOOL
+      , copyable GAPI.SQL_BOOL
+      , writers_can_share GAPI.SQL_BOOL
+      , shared GAPI.SQL_BOOL
+      , app_data_contents GAPI.SQL_BOOL
     );
     
     type t_file_list is table of t_file index by PLS_INTEGER;
