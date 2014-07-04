@@ -12,7 +12,7 @@ prompt  APPLICATION 103 - Google API Tester
 -- Application Export:
 --   Application:     103
 --   Name:            Google API Tester
---   Date and Time:   11:02 Friday July 4, 2014
+--   Date and Time:   11:11 Friday July 4, 2014
 --   Exported By:     TRENT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -155,7 +155,7 @@ wwv_flow_api.create_flow(
   p_alias => nvl(wwv_flow_application_install.get_application_alias,'F_100'),
   p_page_view_logging => 'YES',
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20140704110151',
+  p_checksum_salt_last_reset => '20140704110746',
   p_max_session_length_sec=> null,
   p_compatibility_mode=> '4.2',
   p_html_escaping_mode=> 'E',
@@ -194,7 +194,7 @@ wwv_flow_api.create_flow(
   p_include_legacy_javascript=> 'Y',
   p_default_error_display_loc=> 'INLINE_WITH_FIELD_AND_NOTIFICATION',
   p_last_updated_by => 'TRENT',
-  p_last_upd_yyyymmddhh24miss=> '20140704110151',
+  p_last_upd_yyyymmddhh24miss=> '20140704110746',
   p_ui_type_name => null,
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
@@ -1431,7 +1431,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140704104815'
+ ,p_last_upd_yyyymmddhh24miss => '20140704110746'
   );
 null;
  
@@ -1650,7 +1650,7 @@ declare
   l_length number := 1;
 begin
 s:=s||'select id, title, mime_type, starred'||unistr('\000a')||
-'from table(gapi_drive_file.list_files_sql(5, q''! title contains ''s3'' !'',:GOOGLE_ACCESS_TOKEN))';
+'from table(gapi_drive_file.list_files_sql(5, q''! title contains '''' !'',:GOOGLE_ACCESS_TOKEN))';
 
 wwv_flow_api.create_report_region (
   p_id=> 6408440594847276 + wwv_flow_api.g_id_offset,
