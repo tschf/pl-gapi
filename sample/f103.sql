@@ -12,7 +12,7 @@ prompt  APPLICATION 103 - Google API Tester
 -- Application Export:
 --   Application:     103
 --   Name:            Google API Tester
---   Date and Time:   07:57 Wednesday July 2, 2014
+--   Date and Time:   11:02 Friday July 4, 2014
 --   Exported By:     TRENT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -33,7 +33,7 @@ prompt  APPLICATION 103 - Google API Tester
 --   Shared Components:
 --     Logic:
 --       Items:                  2
---       Processes:              1
+--       Processes:              2
 --     Navigation:
 --       Tab Sets:               1
 --         Tabs:                 3
@@ -155,7 +155,7 @@ wwv_flow_api.create_flow(
   p_alias => nvl(wwv_flow_application_install.get_application_alias,'F_100'),
   p_page_view_logging => 'YES',
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20140702075628',
+  p_checksum_salt_last_reset => '20140704110151',
   p_max_session_length_sec=> null,
   p_compatibility_mode=> '4.2',
   p_html_escaping_mode=> 'E',
@@ -194,7 +194,7 @@ wwv_flow_api.create_flow(
   p_include_legacy_javascript=> 'Y',
   p_default_error_display_loc=> 'INLINE_WITH_FIELD_AND_NOTIFICATION',
   p_last_updated_by => 'TRENT',
-  p_last_upd_yyyymmddhh24miss=> '20140702075628',
+  p_last_upd_yyyymmddhh24miss=> '20140704110151',
   p_ui_type_name => null,
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
@@ -767,6 +767,38 @@ null;
 end;
 /
 
+--application/shared_components/logic/application_processes/clear_tokens_on_new_tab
+ 
+begin
+ 
+declare
+    p varchar2(32767) := null;
+    l_clob clob;
+    l_length number := 1;
+begin
+p:=p||':GOOGLE_REFRESH_TOKEN := NULL;'||unistr('\000a')||
+':GOOGLE_ACCESS_TOKEN := NULL;';
+
+wwv_flow_api.create_flow_process(
+  p_id => 3178722542426218 + wwv_flow_api.g_id_offset,
+  p_flow_id => wwv_flow.g_flow_id,
+  p_process_sequence=> 1,
+  p_process_point => 'ON_SUBMIT_BEFORE_COMPUTATION',
+  p_process_type=> 'PLSQL',
+  p_process_name=> 'CLEAR TOKENS ON NEW TAB',
+  p_process_sql_clob=> p,
+  p_process_error_message=> '',
+  p_error_display_location=> 'INLINE_IN_NOTIFICATION',
+  p_process_when=> ':REQUEST LIKE ''TAB_%''',
+  p_process_when_type=> 'PLSQL_EXPRESSION',
+  p_process_comment=> '');
+end;
+ 
+null;
+ 
+end;
+/
+
 prompt  ...application items
 --
 --application/shared_components/logic/application_items/google_access_token
@@ -818,39 +850,39 @@ prompt  ...Application Tabs
  
 begin
  
---application/shared_components/navigation/tabs/standard/t_home
+--application/shared_components/navigation/tabs/standard/tab_home
 wwv_flow_api.create_tab (
   p_id=> 6254253397529144 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_tab_set=> 'TS1',
   p_tab_sequence=> 10,
-  p_tab_name=> 'T_HOME',
+  p_tab_name=> 'TAB_HOME',
   p_tab_text => 'Home',
   p_tab_step => 1,
   p_tab_also_current_for_pages => '',
   p_tab_parent_tabset=>'',
   p_tab_comment  => '');
  
---application/shared_components/navigation/tabs/standard/drive
+--application/shared_components/navigation/tabs/standard/tab_drive
 wwv_flow_api.create_tab (
   p_id=> 6256545142547321 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_tab_set=> 'TS1',
   p_tab_sequence=> 20,
-  p_tab_name=> 'Drive',
+  p_tab_name=> 'TAB_DRIVE',
   p_tab_text => 'Drive',
   p_tab_step => 2,
   p_tab_also_current_for_pages => '2,4,3',
   p_tab_parent_tabset=>'',
   p_tab_comment  => '');
  
---application/shared_components/navigation/tabs/standard/calendar
+--application/shared_components/navigation/tabs/standard/tab_calendar
 wwv_flow_api.create_tab (
   p_id=> 6464035659121827 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_tab_set=> 'TS1',
   p_tab_sequence=> 30,
-  p_tab_name=> 'Calendar',
+  p_tab_name=> 'TAB_CALENDAR',
   p_tab_text => 'Calendar',
   p_tab_step => 5,
   p_tab_also_current_for_pages => '5,6',
@@ -1399,7 +1431,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140702042931'
+ ,p_last_upd_yyyymmddhh24miss => '20140704104815'
   );
 null;
  
@@ -2996,7 +3028,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140509172317'
+ ,p_last_upd_yyyymmddhh24miss => '20140704104815'
   );
 null;
  
@@ -3285,7 +3317,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140419225222'
+ ,p_last_upd_yyyymmddhh24miss => '20140704104815'
   );
 null;
  
@@ -3453,7 +3485,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140701122032'
+ ,p_last_upd_yyyymmddhh24miss => '20140704104823'
   );
 null;
  
@@ -4878,7 +4910,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'TRENT'
- ,p_last_upd_yyyymmddhh24miss => '20140701122058'
+ ,p_last_upd_yyyymmddhh24miss => '20140704104823'
   );
 null;
  
