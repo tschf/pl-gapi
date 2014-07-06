@@ -90,6 +90,8 @@ as
         else
             set_header(3, 'Content-Length', 0);
         end if;  
+        
+        set_header(4, 'Accept-charset', 'ISO-8859-1');
     
         l_return :=
           apex_web_service.make_rest_request(
@@ -139,6 +141,8 @@ as
         then
             set_header(3, 'Content-Length', length(p_payload));
         end if;  
+        
+        set_header(4, 'Accept-charset', 'ISO-8859-1');
     
         l_return :=
             apex_web_service.make_rest_request(
