@@ -17,13 +17,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 *******************************************************************/
+ACCEPT g_wallet_path          CHAR PROMPT 'Please enter the path where the Oracle wallet was saved: '
+ACCEPT g_wallet_pass          CHAR PROMPT 'Please enter the password you gave the Oracle wallet: '
+
 
 create or replace 
 package body gapi
 as 
 
-    g_wallet_path varchar2(400) := '';
-    g_wallet_password varchar2(400) := '';
+    g_wallet_path varchar2(400) := '~g_wallet_path';
+    g_wallet_password varchar2(400) := '~g_wallet_pass';
     
     procedure set_header(
   

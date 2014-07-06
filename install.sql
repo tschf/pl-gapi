@@ -1,9 +1,9 @@
 set define off
 
 @gapi.pks;
-@gapi.pkb;
+--@gapi.pkb;
 @gapi_auth.pks;
-@gapi_auth.pkb;
+--@gapi_auth.pkb;
 @gapi_cal.pks;
 @gapi_cal_calendar.pks;
 @gapi_cal_calendar.pkb;
@@ -16,3 +16,11 @@ set define off
 @gapi_drive_about.pkb;
 @gapi_drive_change.pks;
 @gapi_drive_change.pkb;
+
+--Scripts requiring user input:
+
+set define on
+set define ~
+
+@gapi.pkb
+@gapi_auth.pkb

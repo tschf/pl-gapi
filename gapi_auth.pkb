@@ -18,12 +18,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 *******************************************************************/
 
+ACCEPT g_client_id          CHAR PROMPT 'Please enter the Google client id, as from the Google API console: '
+ACCEPT g_client_secret      CHAR PROMPT 'Please enter the Google client secret, as from the Google API console: '
+
+
 create or replace
 package body gapi_auth
 as
 
-    g_client_id                         varchar2(400) := '';
-    g_client_secret                     varchar2(400) := '';
+    g_client_id                         varchar2(400) := '~g_client_id';
+    g_client_secret                     varchar2(400) := '~g_client_secret';
     
     gc_callback                         constant varchar2(20) := 'GAPI_AUTH.CALLBACK';
     g_redirect_url                      varchar2(400);
