@@ -21,6 +21,7 @@ create or replace package gapi_drive
 as
 
     SCOPE_FULL constant varchar2(50) := 'https://www.googleapis.com/auth/drive';
+    API_VERSION constant number := 2;
 
 end gapi_drive;
 /

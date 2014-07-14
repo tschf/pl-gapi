@@ -24,6 +24,8 @@ as
 
     SCOPE_FULL constant varchar2(50) := 'https://www.googleapis.com/auth/calendar';
     SCOPE_READ_ONLY constant varchar2(50) := 'https://www.googleapis.com/auth/calendar.readonly';
+    
+    API_VERSION constant number := 3;
 
 end gapi_cal;
 /
