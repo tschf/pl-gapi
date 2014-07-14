@@ -30,7 +30,6 @@ as
     g_client_secret                     varchar2(400) := '~g_client_secret';
     
     gc_callback                         constant varchar2(20) := 'GAPI_AUTH.CALLBACK';
-    g_redirect_url                      varchar2(400);
     g_auth_url                          varchar2(400) := 'https://accounts.google.com/o/oauth2/auth';
     
     g_token_url                         varchar2(400) := 'https://accounts.google.com/o/oauth2/token';
@@ -88,26 +87,20 @@ as
         l_return varchar2(200);
     begin
     
-        if g_redirect_url is not null
-        then
-            
-            l_return := replace(g_redirect_url, '#SCHEMA#', sys_context('userenv','current_schema'));
-            
-        else
-    
-            l_protocol      := owa_util.get_cgi_env('REQUEST_PROTOCOL');
-            l_host          := owa_util.get_cgi_env('HTTP_HOST');
-            l_script        := owa_util.get_cgi_env('SCRIPT_NAME');
-            
-            l_return := l_protocol;
-            l_return := l_return || '://';
-            l_return := l_return || l_host;
-            l_return := l_return || l_script;
-            l_return := l_return || '/';
-            l_return := l_return || sys_context('userenv','current_schema');
-            l_return := l_return || '.';
-            l_return := l_return || gc_callback;
-        end if;
+   
+        l_protocol      := owa_util.get_cgi_env('REQUEST_PROTOCOL');
+        l_host          := owa_util.get_cgi_env('HTTP_HOST');
+        l_script        := owa_util.get_cgi_env('SCRIPT_NAME');
+        
+        l_return := l_protocol;
+        l_return := l_return || '://';
+        l_return := l_return || l_host;
+        l_return := l_return || l_script;
+        l_return := l_return || '/';
+        l_return := l_return || sys_context('userenv','current_schema');
+        l_return := l_return || '.';
+        l_return := l_return || gc_callback;
+
             
         return l_return;
     
