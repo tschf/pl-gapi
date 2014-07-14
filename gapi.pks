@@ -30,6 +30,8 @@ as
 
     subtype SQL_BOOL is varchar2(5);
     
+    GAPI_VERSION    constant varchar2(10) := '0.2.10';
+    
     GC_TRUE         constant varchar2(5) := 'true';
     GC_FALSE        constant varchar2(5) := 'false';
 
